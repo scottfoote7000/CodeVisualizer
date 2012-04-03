@@ -87,4 +87,8 @@ $(function(){
     $(this).css({"background-color": "white"});
   });
   
+  $("#compviewclose").click(function(){
+    $("#compview").hide();
+  });
+  
 });
