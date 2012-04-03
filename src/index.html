@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CodeViz</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    
+    
+    <!--<link rel="stylesheet" href="css/jquery-ui-1.8.18.custom.css" type="text/css" />-->
+  
+  
+    <script type="text/javascript" src="js/libs/jquery.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery.color.js"></script>
+    <script type="text/javascript" src="js/libs/raphael.js"></script>
+    <script type="text/javascript" src="js/znode/nodegraph.js"></script>
+    <script type="text/javascript" src="js/znode/ui.js"></script>
+    
+    <!--<script type="text/javascript" src="js/libs/jquery-ui-1.8.18.custom.min.js"></script>-->
+  
+    <!--<style>-->
+    <!--  #content { border: 1px solid #ccc; margin-right: 25px; height: 400px; overflow: hidden; position: relative; }-->
+    <!--  #slider-vertical { position: absolute; right: 25px; height: 400px; }-->
+    <!--  #slider-horizontal { position: absolute; margin-top: 10px; width: 95%; }-->
+    <!--  #scroll-pane { position: absolute; width: 3000px;}-->
+    <!--</style>-->
+    
+    
+  </head>
+  <body>
+    <div id="openWin">
+      <div id="fileTitle">Files:</div>
+      <div id="files"></div>
+    </div>
+    <div id="overlay"></div>
+    <div id="controls">
+      <div id="logo" >CodeViz</div>
+      <div id="save" class="btn">Save</div>
+      <div id="open" class="btn">Open</div>
+      <div id="clear" class="btn">Clear All</div>
+      <div id="help" class="btn">Help</div>
+      <div id="saveForm">
+        <form id="nameForm">
+         Name :
+         <input type="text" name="filename" id="filename" spellcheck="false"/>
+        </form>
+      </div>
+    </div>
+    <!--<div id="slider-vertical"></div>-->
+    <!--<div id="content">-->
+      <div id="canvas"></div>
+    <!--</div>-->
+    <!--<div id="slider-horizontal"></div>-->
+    
+    
+    <div id="compview">  <!-- added this div -->
+      <div id="compviewbox">
+        <div id="compviewheader">Composition View</div>
+        <div id="compviewclose">X</div>
+      </div>
+      <textarea id="compviewtxt" spellcheck="false" ></textarea>
+    </div>
+
+    
+    <!--<script>-->
+    <!--$(function() {-->
+    <!--    var scrollPane = $('#canvas'),-->
+    <!--      contentPane = $('#content'),-->
+    <!--      scrollableHeight = scrollPane.height() - scrollPane.parent().height() || 0,-->
+    <!--      scrollableWidth = scrollPane.width(),-->
+    <!--      contentWidth = contentPane.width();-->
+    <!--  -->
+    <!--    $("#slider-vertical").slider({-->
+    <!--      orientation: "vertical",-->
+    <!--      range: "max",-->
+    <!--      min: 0,-->
+    <!--      max: scrollableHeight,-->
+    <!--      value: scrollableHeight,-->
+    <!--      slide: function(event, ui) {-->
+    <!--        scrollPane.css({top: ui.value - scrollableHeight});-->
+    <!--      }-->
+    <!--    });-->
+    <!--    -->
+    <!--    $("#slider-horizontal").slider({-->
+    <!--      orientation: "horizontal",-->
+    <!--      range: "max",-->
+    <!--      min: 0,-->
+    <!--      max: scrollableWidth - contentWidth,-->
+    <!--      value: 0,-->
+    <!--      slide: function(event, ui) {-->
+    <!--        scrollPane.css({left: 0 - ui.value});-->
+    <!--      }-->
+    <!--    });-->
+    <!--  });-->
+    <!--</script>-->
+
+  </body>
+</html>
+  
