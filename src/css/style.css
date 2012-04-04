@@ -1,9 +1,10 @@
 body, html{
   margin : 0;
   padding : 0;
-  overflow : hidden;
+  overflow : scroll;
 }
 #canvas{
+  overflow : visible;
   background-color : white;
   background : url("../images/graph_paper_tile.gif");
 }

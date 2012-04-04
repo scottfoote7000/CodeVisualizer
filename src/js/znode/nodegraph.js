@@ -21,7 +21,8 @@ function NodeGraph(){
   var paper = new Raphael("canvas", "100", "100");
   
   function resizePaper(){
-    paper.setSize(win.width(), win.height() - topHeight);
+    //paper.setSize(win.width(), win.height() - topHeight);
+    paper.setSize(4000, 3000);
   }
   win.resize(resizePaper);
   resizePaper();
@@ -350,7 +351,7 @@ function NodeGraph(){
    
     txt.css({"width" : nodeWidth - 5,
              "height" : nodeHeight - bar.height() - myinput.height() - 15,
-             "resize" : "none", "overflow" : "hidden",
+             "resize" : "none", "overflow" : "scroll",
              "font-size" : "10px" , "font-family" : "sans-serif",
              "border" : "none","z-index":4});
           
