@@ -21,7 +21,8 @@ function NodeGraph(){
   var paper = new Raphael("canvas", "100", "100");
   
   function resizePaper(){
-    paper.setSize(win.width(), win.height() - topHeight);
+    //paper.setSize(win.width(), win.height() - topHeight);
+    paper.setSize(4000, 3000);
   }
   win.resize(resizePaper);
   resizePaper();
@@ -254,12 +255,16 @@ function NodeGraph(){
     
     canvas.append("<div class='node'/>");
     var n = $(".node").last();
-    n.css({"position" : "absolute",      
+    n.css({"position" : "absolute",
+           "display" : "block",
            "left" : xp, "top" : yp,
            "width" : w, "height" : h,   
            "border" : "1px solid gray",
            "background-color" : "white"});
     n.css("z-index", zindex++);
+    n.css("-moz-box-shadow", "2px 2px 3px #000000");
+    n.css("-webkit-box-shadow", "2px 2px 3px #000000");
+    n.css("box-shadow", "2px 2px 3px #000000");
            
     this.content = n;
     
@@ -282,7 +287,9 @@ function NodeGraph(){
     n.append("<div class='bar'/>");
     var bar = $(".node .bar").last();
     bar.css({"height" : "10px", 
-             "background-color" : "gray", 
+             "background-color" : "gray",
+             "background-image" : "-webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue))",
+             "background-image" : "-moz-linear-gradient(-45deg, cyan, blue)",
              "padding" : "0", "margin": "0",
              "font-size" : "9px", "cursor" : "pointer"});
              
@@ -304,26 +311,47 @@ function NodeGraph(){
           curr.remove();
         }
       });
-    }
-   
-    n.append("<textarea class='txt' spellcheck='false' />");
+    }    
+    n.append("<div class='details'>?</div>");
+    var details = $(".node .details").last();
+    details.css({"position":"absolute","padding-right" : 2, "padding-top" : 1, "padding-left" : 2,
+            "color" : "white", "font-family" : "sans-serif",
+            "top" : 0, "right": 0, "cursor": "pointer",
+            "font-size" : "7px", "background-color" : "gray", "z-index" : 100});
+      details.hover(function(){
+      details.css("color","black");
+    }, function(){
+      details.css("color","white");
+    }).click(function(){
+      var temp = $(this).siblings('.nodecomp');
+      temp.toggle();
+      //$("#compview").show();
+    });
+    
+    // this input field stores the node's name.
+    n.append("<div><input type='text' class='nodename' size='15' spellcheck='false'></input></div>");
+    var myinput = $(".nodename").last(); // need this to get its height later.
+    this.nodename = myinput; // need this for the write out to JSON file.
+        
+    // this textarea field stores the node's code.
+    n.append("<div class='nodecomp'><textarea class='txt' spellcheck='false' /></div>");
     var txt = $(".node .txt").last();
     txt.css("position","absolute");
    
     txt.css({"width" : nodeWidth - 5,
-             "height" : nodeHeight - bar.height() - 5,
-             "resize" : "none", "overflow" : "hidden",
-             "font-size" : "12px" , "font-family" : "sans-serif",
+             "height" : nodeHeight - bar.height() - myinput.height() - 15,
+             "resize" : "none", "overflow" : "scroll",
+             "font-size" : "10px" , "font-family" : "sans-serif",
              "border" : "none","z-index":4});
           
     this.txt = txt;
-    
+
     n.append("<div class='resizer' />");
     var resizer = $(".node .resizer").last();
     
     resizer.css({"position" : "absolute" , "z-index" : 10,
-                 "width" : "10px", "height" : "10px",
-                 "left" : nodeWidth - 11, "top" : nodeHeight - 11,
+                 "width" : "5px", "height" : "5px", // was 10px and 10px
+                 "left" : nodeWidth - 6, "top" : nodeHeight - 6, // was 11px and 11px
                  "background-color" : "white", "font-size" : "1px",
                  "border" : "1px solid gray",
                  "cursor" : "pointer"});
@@ -447,11 +475,11 @@ function NodeGraph(){
         var loc = resizer.position();
         var x = loc.left;
         var y = loc.top;
-        n.css({"width" : x + resizer.width() + 1,
-               "height" : y + resizer.height() + 1});
+        n.css({"width" : x + resizer.width() - 1,
+               "height" : y + resizer.height() - 1});
         
-        txt.css({"width" : n.width() - 5, "height" : n.height() - bar.height() - 5});
-        
+        txt.css({"width" : n.width() - 5, "height" : n.height() - bar.height() - myinput.height() - 15});
+        myinput.css({"width" : n.width() - 10}); // added this line to resize nodename field.        
         positionLeft();
         positionRight();
         positionTop();
@@ -516,8 +544,8 @@ function NodeGraph(){
     return new Node(x, y, w, h, noDelete);
   }
   
-  var defaultWidth = 100;
-  var defaultHeight = 50;
+  var defaultWidth = 180; // originally 100.
+  var defaultHeight = 80; // originally 50.
   
   this.addNodeAtMouse = function(){
     //alert("Zevan");
@@ -546,6 +574,11 @@ function NodeGraph(){
       var temp = new Node(n.x, n.y, n.width, n.height, ex, n.id);
       var addreturns = n.txt.replace(/\\n/g,'\n');
       temp.txt.val(addreturns);
+      if (n.nodename == null) {
+        temp.nodename.val(addreturns); // use txt value if nodename is null.
+      } else {
+        temp.nodename.val(n.nodename);
+      }
     }
     for (i in data.connections){
       var c = data.connections[i];
@@ -562,6 +595,7 @@ function NodeGraph(){
       json += '"y" : ' + n.y() + ', ';
       json += '"width" : ' + n.width() + ', ';
       json += '"height" : ' + n.height() + ', ';
+      json += '"nodename" : "' + n.nodename.val() + '", ';
       json += '"txt" : "' + addSlashes(n.txt.val()) + '"},';
     }
     json = json.substr(0, json.length - 1);
