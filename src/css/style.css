@@ -2,11 +2,11 @@ body, html{
   margin : 0;
   padding : 0;
   overflow : scroll;
+  background : url("../images/graph_paper_tile.gif");
 }
 #canvas{
   overflow : visible;
-  background-color : white;
-  background : url("../images/graph_paper_tile.gif");
+  /*background-color : none;*/
 }
 #overlay{
   position: absolute;
@@ -23,6 +23,7 @@ body, html{
   border-left : none;
   border-right : none;
   border-bottom : 1px solid #999;
+  box-align : center;
 }
 
 .btn{ 
@@ -120,23 +121,37 @@ textarea{
 .nodename {
   font-size : 10px;
   border : none;
+  padding : none;
+  margin : none;
   color : black;
 }
 .nodecomp {
   display : none;
+  border : none;
+  padding : none;
+  margin : none;
+}
+
+#findvarform{
+  position : relative;
+  float : left;
+  font-family : Georgia, serif;
+  font-size : 12px;
+  padding : 10px 0px 0px 18px;
 }
 
 #compview {
-  display : none;
+  display : block;
   position : absolute;
   z-index : 100000;
-  height : 400px;
-  width : 400px;
-  top : 200px;
-  left : 200px;
+  /*height : 400px;*/
+  /*width : 400px;*/
+  top : 50px;
+  left : 150px;
   border : 1px solid gray;
   color : white;
   padding : 4px;
+  background-color : white;
 }
 #compviewbox {
   display : -moz-box;

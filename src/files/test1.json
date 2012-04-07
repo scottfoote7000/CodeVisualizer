@@ -1,0 +1,1 @@
+{"nodes" : [{"id" : 0, "x" : 164, "y" : 158, "width" : 181, "height" : 81, "nodename" : "1", "txt" : "test"},{"id" : 1, "x" : 244, "y" : 351, "width" : 182, "height" : 82, "nodename" : "2", "txt" : "another test"}], "connections" : [{"nodeA" : 0, "nodeB" : 1, "conA" : "bottom", "conB" : "top"}]}

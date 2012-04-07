@@ -311,7 +311,13 @@ function NodeGraph(){
           curr.remove();
         }
       });
-    }    
+    }
+    
+    
+    
+    
+    
+    
     n.append("<div class='details'>?</div>");
     var details = $(".node .details").last();
     details.css({"position":"absolute","padding-right" : 2, "padding-top" : 1, "padding-left" : 2,
@@ -329,12 +335,17 @@ function NodeGraph(){
     });
     
     // this input field stores the node's name.
-    n.append("<div><input type='text' class='nodename' size='15' spellcheck='false'></input></div>");
+    n.append("<div class='nodename'><input type='text' class='nodename' size='20' spellcheck='false'></input></div>");
     var myinput = $(".nodename").last(); // need this to get its height later.
     this.nodename = myinput; // need this for the write out to JSON file.
-        
+    
+    
+    
+    
+    
+    
     // this textarea field stores the node's code.
-    n.append("<div class='nodecomp'><textarea class='txt' spellcheck='false' /></div>");
+    n.append("<div class='nodecomp'><pre class='txt' contenteditable='true' spellcheck='false' /></pre></div>");
     var txt = $(".node .txt").last();
     txt.css("position","absolute");
    
@@ -342,10 +353,10 @@ function NodeGraph(){
              "height" : nodeHeight - bar.height() - myinput.height() - 15,
              "resize" : "none", "overflow" : "scroll",
              "font-size" : "10px" , "font-family" : "sans-serif",
-             "border" : "none","z-index":4});
+             "border" : "solid 1px black","z-index":4});
           
     this.txt = txt;
-
+   
     n.append("<div class='resizer' />");
     var resizer = $(".node .resizer").last();
     
@@ -479,7 +490,8 @@ function NodeGraph(){
                "height" : y + resizer.height() - 1});
         
         txt.css({"width" : n.width() - 5, "height" : n.height() - bar.height() - myinput.height() - 15});
-        myinput.css({"width" : n.width() - 10}); // added this line to resize nodename field.        
+        myinput.css({"width" : n.width() - 10}); // added this line to resize nodename field.
+        
         positionLeft();
         positionRight();
         positionTop();
@@ -573,7 +585,13 @@ function NodeGraph(){
       var ex = (i == "0") ? true : false;
       var temp = new Node(n.x, n.y, n.width, n.height, ex, n.id);
       var addreturns = n.txt.replace(/\\n/g,'\n');
-      temp.txt.val(addreturns);
+      // the above line appears to be useless, so we are writing out CRs as <BR>s.
+      // therefore we need this next line to put CRs back in place upon reading in a JSON file.
+      addreturns = addreturns.replace(/<br>/g,'\n');
+      // the toJSON function replaces double quotes with ~~ because escaping a double quote was not working.
+      addreturns = addreturns.replace(/\~~/g,'"');
+      temp.txt.text(addreturns);
+//      temp.txt.text(n.txt);
       if (n.nodename == null) {
         temp.nodename.val(addreturns); // use txt value if nodename is null.
       } else {
@@ -596,7 +614,8 @@ function NodeGraph(){
       json += '"width" : ' + n.width() + ', ';
       json += '"height" : ' + n.height() + ', ';
       json += '"nodename" : "' + n.nodename.val() + '", ';
-      json += '"txt" : "' + addSlashes(n.txt.val()) + '"},';
+      json += '"txt" : "' + addSlashes(n.txt.html()) + '"},';
+//      json += '"txt" : "' + n.txt.text() + '"},';
     }
     json = json.substr(0, json.length - 1);
     json += '], "connections" : [';
@@ -622,9 +641,12 @@ function NodeGraph(){
   function addSlashes(str) {
     str = str.replace(/\\/g,'\\\\');
     str = str.replace(/\'/g,'\\\'');
-    str = str.replace(/\"/g,'\\"');
+//    str = str.replace(/\"/g,'\\"');
+    str = str.replace(/\"/g,'\\~~');
     str = str.replace(/\0/g,'\\0');
-    str = str.replace(/\n/g,'\\\\n');
+    // CRs are automatically replace with <BR>s because of the ".html()" method on the "<pre>" element.
+//    str = str.replace(/\n/g,'\\\\n'); // line feeds
+//    str = str.replace(/\n/g,'\\||'); // carriage returns
     return str;
   }
 }

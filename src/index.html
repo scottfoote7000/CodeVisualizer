@@ -34,16 +34,24 @@
     <div id="overlay"></div>
     <div id="controls">
       <div id="logo" >CodeViz</div>
-      <div id="save" class="btn">Save</div>
-      <div id="open" class="btn">Open</div>
       <div id="clear" class="btn">Clear All</div>
-      <div id="help" class="btn">Help</div>
+      <div id="open" class="btn">Open</div>
       <div id="saveForm">
         <form id="nameForm">
          Name :
          <input type="text" name="filename" id="filename" spellcheck="false"/>
         </form>
       </div>
+      <div id="save" class="btn">Save</div>
+      <div id="findvarform">
+        <form id="findwhichvar">
+           Variable/Function :
+          <input type="text" name="varname" id="varname" spellcheck="false"/>
+        </form>
+      </div>
+      <div id="findvar" class="btn">Find</div>
+      <div id="clearvar" class="btn">Reset</div>
+      <div id="help" class="btn">Help</div>
     </div>
     <!--<div id="slider-vertical"></div>-->
     <!--<div id="content">-->
@@ -54,10 +62,14 @@
     
     <div id="compview">  <!-- added this div -->
       <div id="compviewbox">
-        <div id="compviewheader">Composition View</div>
+        <div id="compviewheader">Global Variables </div>
         <div id="compviewclose">X</div>
       </div>
-      <textarea id="compviewtxt" spellcheck="false" ></textarea>
+      <div id="compviewtxt">
+        <select id="availableVars">
+          <option value="">Clear selection...</option>
+        </select>
+      </div>
     </div>
 
     
