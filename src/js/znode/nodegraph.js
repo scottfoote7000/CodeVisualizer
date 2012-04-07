@@ -19,7 +19,6 @@ function NodeGraph(){
   var topHeight = $("#controls").height();
   
   var paper = new Raphael("canvas", "100", "100");
-  
   function resizePaper(){
     //paper.setSize(win.width(), win.height() - topHeight);
     paper.setSize(4000, 3000);
@@ -340,7 +339,10 @@ function NodeGraph(){
     this.nodename = myinput; // need this for the write out to JSON file.
     
     
-    
+    // define method to set node's name
+    this.setNodeName = function (myName) {
+      this.nodename.val(myName); // val() because nodename is an INPUT field.
+    }
     
     
     
@@ -356,6 +358,12 @@ function NodeGraph(){
              "border" : "solid 1px black","z-index":4});
           
     this.txt = txt;
+    
+    
+    // define method to set node's contents
+    this.setNodeContents = function(myContents) {
+      this.txt.text(myContents);
+    }
    
     n.append("<div class='resizer' />");
     var resizer = $(".node .resizer").last();
@@ -590,7 +598,7 @@ function NodeGraph(){
       addreturns = addreturns.replace(/<br>/g,'\n');
       // the toJSON function replaces double quotes with ~~ because escaping a double quote was not working.
       addreturns = addreturns.replace(/\~~/g,'"');
-      temp.txt.text(addreturns);
+     temp.txt.text(escape(addreturns));
 //      temp.txt.text(n.txt);
       if (n.nodename == null) {
         temp.nodename.val(addreturns); // use txt value if nodename is null.
@@ -649,4 +657,5 @@ function NodeGraph(){
 //    str = str.replace(/\n/g,'\\||'); // carriage returns
     return str;
   }
+
 }

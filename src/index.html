@@ -12,6 +12,8 @@
     <script type="text/javascript" src="js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery.color.js"></script>
     <script type="text/javascript" src="js/libs/raphael.js"></script>
+    <script type="text/javascript" src="js/znode/variables.js"></script>
+    <script type="text/javascript" src="js/znode/readfiles.js"></script>
     <script type="text/javascript" src="js/znode/nodegraph.js"></script>
     <script type="text/javascript" src="js/znode/ui.js"></script>
     
@@ -45,8 +47,9 @@
       <div id="save" class="btn">Save</div>
       <div id="findvarform">
         <form id="findwhichvar">
-           Variable/Function :
-          <input type="text" name="varname" id="varname" spellcheck="false"/>
+           Ingest Files :
+          <input type="file" id="readfiles" name="readfiles[]" size="20" multiple />
+          <!--<input type="text" name="varname" id="varname" spellcheck="false"/>-->
         </form>
       </div>
       <div id="findvar" class="btn">Find</div>
@@ -62,15 +65,32 @@
     
     <div id="compview">  <!-- added this div -->
       <div id="compviewbox">
-        <div id="compviewheader">Global Variables </div>
+        <div id="compviewheader">Global Variables/Functions </div>
         <div id="compviewclose">X</div>
       </div>
       <div id="compviewtxt">
-        <select id="availableVars">
+        <select id="availableVars" onchange="highlightVars(this.options[this.selectedIndex].value)">
           <option value="">Clear selection...</option>
         </select>
       </div>
     </div>
+    
+    <script>
+      var graph; // declared here globally.
+      document.getElementById('readfiles').addEventListener('change', handleFileSelect, false);
+      function highlightVars(whichString) {
+        //var tmp = $("#varname").val();
+        // NEED TO ADD IN AN ALERT IF NO MATCHES!
+        clearHighlights();
+        if (whichString.length > 0) {
+          var nodesfound = $("pre:contains(" + whichString + ")").parent().show().parent().css('background-color','yellow');
+        }
+      }
+      
+      function clearHighlights() {
+        var nodesfound = $(".node").css('background-color','white');    
+      }
+    </script>
 
     
     <!--<script>-->
