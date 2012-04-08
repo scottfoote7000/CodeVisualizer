@@ -1,8 +1,7 @@
-// Declare the NodeGraph function
 function NodeGraph(){
-  var win = $(window); // window selector
-  var canvas = $("#canvas"); // canvas element selector
-  var overlay = $("#overlay"); // overlay element selector
+  var win = $(window);
+  var canvas = $("#canvas");
+  var overlay = $("#overlay");
   var currentNode;
   var currentConnection = {};
   var connections = {};
@@ -19,38 +18,27 @@ function NodeGraph(){
   var SHIFT = 16;
   var topHeight = $("#controls").height();
   
-  // Create a new Raphael object for the canvas element
   var paper = new Raphael("canvas", "100", "100");
-  
-  // Declare the function to resize the Paper
   function resizePaper(){
     //paper.setSize(win.width(), win.height() - topHeight);
     paper.setSize(4000, 3000);
   }
-  // Call the function to resize the Paper
   win.resize(resizePaper);
   resizePaper();
   
-  // Append the menu element to the canvas
   canvas.append("<ul id='menu'><li>Left<\/li><li>Right<\/li><li>Top<\/li><li>Bottom<\/li><\/ul>");
-  var menu = $("#menu");  // menu element selector
-  // Add styling to the new menu element
+  var menu = $("#menu");
   menu.css({"position" : "absolute", "left" : 100, "top" : 0, "z-index" : 5000, "border" : "1px solid gray", "padding" : 0});
-  // Hide the menu by default
   menu.hide();
   
-  // Append the new hit element to the canvas
   canvas.append("<div id='hit' />");
   hitConnect = $("#hit");
-  // Add styling to the new hit element
   hitConnect.css({"position" : "absolute", "left" : 100, "top" : 0, "z-index" : 4000, "border" : "none", 
                   "width" : 10, "height": 10, "cursor":"pointer", "font-size": "1px"});
                   
-  // Add a hover event handler to the items in the menu element
   $("#menu li").hover(function(){
     $(this).css("background-color", "#cccccc");
   },
-  // Use an anonymous function to define the click event handler that hides the file menu
   function(){
     $(this).css("background-color", "white");
   }).click(function(){
@@ -59,7 +47,6 @@ function NodeGraph(){
     connectNode(dir);
   });
   
-  // Declare the function to connect nodes together
   function connectNode(dir){
     var node, x, y;
     dir = dir.toLowerCase();
@@ -82,15 +69,12 @@ function NodeGraph(){
       y = pathEnd.y + topHeight - 5 - currentNode.height();
     }
     
-    // Create a new Node object
+ 
     node = new Node(x, y, currentNode.width(), currentNode.height());
-    // Save the new connection between these nodes
     saveConnection(node, dir);
-    // Point to the new Node as the current node
     currentNode = node;
   }
   
-  // Declare the function to create a new connection between nodes
   function createConnection(a, conA, b, conB){
       var link = paper.path("M 0 0 L 1 1");
       link.attr({"stroke-width":2});
@@ -102,7 +86,6 @@ function NodeGraph(){
       saveConnection(b, conB);
   }
   
-  // Declare the function to save a new connection
   function saveConnection(node, dir){
     if (!currentConnection) return;
     if (!currentConnection.parent) return;
@@ -119,12 +102,11 @@ function NodeGraph(){
     currentNode.updateConnections();
     node.addConnection(currentConnection);
     
-    // Create mouse event handlers on the current connection
     $(currentConnection.node).mouseenter(function(){
-      this.raphael.attr("stroke","#FF0000");  // highlight in red
+      this.raphael.attr("stroke","#FF0000");
     }).mouseleave(function(){
-      this.raphael.attr("stroke","#000000");  // return to black
-    }).click(function(){  // clicking on a connection triggers a delete
+      this.raphael.attr("stroke","#000000");
+    }).click(function(){
       if (confirm("Are you sure you want to delete this connection?")){
         this.raphael.remove();
         delete connections[this.raphael.id];
@@ -132,7 +114,6 @@ function NodeGraph(){
     });
   }
   
-  // Create mouse handler event
   canvas.mousedown(function(e){
     if (menu.css("display") == "block"){
       if (e.target.tagName != "LI"){
@@ -142,19 +123,17 @@ function NodeGraph(){
     }
   });
   
-  // Add a key stroke event handler to the document element
   $(document).keydown(function(e){
     key[e.keyCode] = true;
   }).keyup(function(e){
     key[e.keyCode] = false;
   });
   
-  // Add a mouse event handler to the document element
   $(document).mousemove(function(e){
     mouseX = e.pageX;
     mouseY = e.pageY - topHeight;
   }).mouseup(function(e){
-    overlay.hide();  // hide the overlay element
+    overlay.hide();
     var creatingNewNode = newNode;
     
     hitConnect.css({"left":mouseX - 5, "top":mouseY + topHeight - 5});
@@ -222,7 +201,6 @@ function NodeGraph(){
     if (creatingNewNode) currentNode.txt[0].focus();
   });
   
-  // Declare the toGlobal function
   function toGlobal(np, c){
     var l = c.position();
     return {position : function(){ return {left: l.left + np.left, top : l.top + np.top}; },
@@ -230,13 +208,11 @@ function NodeGraph(){
             height : function(){ return c.height(); }};
   }
   
-  // Declare the function to show the Overlay
   function showOverlay(){
     overlay.show();
     overlay.css({"width" : win.width(), "height" : win.height()}); //, "opacity": 0.1});
   }
   
-  // Declare the function called when starting to drag
   function startDrag(element, bounds, dragCallback){
     showOverlay();
     var startX = mouseX - element.position().left;
@@ -257,39 +233,33 @@ function NodeGraph(){
     loops.push(id);
   }
   
-  // Declare the function to construct a Node
+  
   function Node(xp, yp, w, h, noDelete, forceId){
     
     if (forceId){
        nodeId = forceId;
     }
-    // Track this Node in the nodes array
     this.id = nodeId;
     nodes[nodeId] = this;
     nodeId++;
     
     var curr = this;
-    // No connections to start
     this.connections = {};
     var connectionIndex = 0;
     
-    // Add connection
     this.addConnection = function(c){
       curr.connections[connectionIndex++] = c;
       return c;
     }
     
-    // Append the node element (div) to the canvas
     canvas.append("<div class='node'/>");
     var n = $(".node").last();
-    // Add styling to the new node
     n.css({"position" : "absolute",
            "display" : "block",
            "left" : xp, "top" : yp,
            "width" : w, "height" : h,   
            "border" : "1px solid gray",
            "background-color" : "white"});
-    // Put the new node on top
     n.css("z-index", zindex++);
     n.css("-moz-box-shadow", "2px 2px 3px #000000");
     n.css("-webkit-box-shadow", "2px 2px 3px #000000");
@@ -313,10 +283,8 @@ function NodeGraph(){
     var nodeWidth = n.width();
     var nodeHeight = n.height();
            
-    // Append the bar element to the node
     n.append("<div class='bar'/>");
     var bar = $(".node .bar").last();
-    // Style both the node and the bar element
     bar.css({"height" : "10px", 
              "background-color" : "gray",
              "background-image" : "-webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue))",
@@ -324,23 +292,20 @@ function NodeGraph(){
              "padding" : "0", "margin": "0",
              "font-size" : "9px", "cursor" : "pointer"});
              
-    // Add the delete icon-button to the bar on this node
+             
     if (!noDelete){
       n.append("<div class='ex'>X<\/div>");
       var ex = $(".node .ex").last();
-      // Style the 'x' icon in the bar on the node
       ex.css({"position":"absolute","padding-right" : 2, "padding-top" : 1, "padding-left" : 2,
               "color" : "white", "font-family" : "sans-serif",
               "top" : 0, "left": 0, "cursor": "pointer",
               "font-size" : "7px", "background-color" : "gray", "z-index" : 100});
-      // Set a hover event handler on the 'x' icon
       ex.hover(function(){
         ex.css("color","black");
       }, function(){
         ex.css("color","white");
-        // Set a click event handler on the 'x' icon
       }).click(function(){
-        // Prompt user to confirm intent to delete
+      
         if (confirm("Are you sure you want to delete this node?")){
           curr.remove();
         }
@@ -351,27 +316,24 @@ function NodeGraph(){
     
     
     
-    // Append a details element to the Node
+    
     n.append("<div class='details'>?</div>");
     var details = $(".node .details").last();
-    // Style both the Node and the details element
     details.css({"position":"absolute","padding-right" : 2, "padding-top" : 1, "padding-left" : 2,
             "color" : "white", "font-family" : "sans-serif",
             "top" : 0, "right": 0, "cursor": "pointer",
             "font-size" : "7px", "background-color" : "gray", "z-index" : 100});
-      // Create a hover event handler
       details.hover(function(){
       details.css("color","black");
     }, function(){
       details.css("color","white");
-      // Define the click event handler on the details element
-    }).click(function(){  
+    }).click(function(){
       var temp = $(this).siblings('.nodecomp');
       temp.toggle();
       //$("#compview").show();
     });
     
-    // Append an input element to the node to store the node's name.
+    // this input field stores the node's name.
     n.append("<div class='nodename'><input type='text' class='nodename' size='20' spellcheck='false'></input></div>");
     var myinput = $(".nodename").last(); // need this to get its height later.
     this.nodename = myinput; // need this for the write out to JSON file.
@@ -384,10 +346,9 @@ function NodeGraph(){
     
     
     
-    // Append a textarea element to the node to store the node's code content.
+    // this textarea field stores the node's code.
     n.append("<div class='nodecomp'><pre class='txt' contenteditable='true' spellcheck='false' /></pre></div>");
     var txt = $(".node .txt").last();
-    // Style the text in the node's textarea element
     txt.css("position","absolute");
    
     txt.css({"width" : nodeWidth - 5,
@@ -397,7 +358,6 @@ function NodeGraph(){
              "border" : "solid 1px black","z-index":4});
           
     this.txt = txt;
-
     
     
     // define method to set node's contents
@@ -405,29 +365,25 @@ function NodeGraph(){
       this.txt.text(myContents);
     }
    
-    // Append a resizer element to the node
     n.append("<div class='resizer' />");
     var resizer = $(".node .resizer").last();
-    // Style the resizer element on the node
+    
     resizer.css({"position" : "absolute" , "z-index" : 10,
                  "width" : "5px", "height" : "5px", // was 10px and 10px
                  "left" : nodeWidth - 6, "top" : nodeHeight - 6, // was 11px and 11px
                  "background-color" : "white", "font-size" : "1px",
                  "border" : "1px solid gray",
                  "cursor" : "pointer"});
-
-    // Append directional elements to the node
+    
     n.append("<div class='left'>");
     n.append("<div class='top'>");
     n.append("<div class='right'>");
     n.append("<div class='bottom'>");
     
     var left = $(".node .left").last();
-    // Style the left element on the node
     left.css("left","-11px");
     
     var top = $(".node .top").last();
-    // Style the top element on the node
     top.css("top","-11px");
     
     var right = $(".node .right").last();
@@ -490,7 +446,7 @@ function NodeGraph(){
     this.updateConnections = updateConnections;
     
     
-    function addLink(e){
+   function addLink(e){
       currentNode = curr;
       e.preventDefault();
       showOverlay();
@@ -513,22 +469,22 @@ function NodeGraph(){
         pathEnd.y = mouseY;
       }, 30);
       loops.push(id);
-    }
-    left.mousedown(addLink);
-    right.mousedown(addLink);
-    top.mousedown(addLink);
-    bottom.mousedown(addLink);
+   }
+   left.mousedown(addLink);
+   right.mousedown(addLink);
+   top.mousedown(addLink);
+   bottom.mousedown(addLink);
    
-    this.remove = function(){
-      for (var i in curr.connections){
-        var c = curr.connections[i];
-        c.remove();
-        delete connections[c.id];
-        delete curr.connections[i];
-      }
-      n.remove();
-      delete nodes[this.id];
-    }
+   this.remove = function(){
+     for (var i in curr.connections){
+       var c = curr.connections[i];
+       c.remove();
+       delete connections[c.id];
+       delete curr.connections[i];
+     }
+     n.remove();
+     delete nodes[this.id];
+   }
     
     resizer.mousedown(function(e){
       currentNode = curr;
@@ -565,9 +521,7 @@ function NodeGraph(){
     });
     
   }
-  // end of function to construct a node
   
-  // Declare the hit test function
   function hitTest(a, b){
     var aPos = a.position();
     var bPos = b.position();
@@ -591,8 +545,7 @@ function NodeGraph(){
   }
   
   
-  // Declare the clear function
-  function clear(){
+ function clear(){
     nodeId = 0;
     connectionsId = 0;
     for (var i in nodes){
@@ -600,15 +553,13 @@ function NodeGraph(){
     }
   }
   
-  // Declare the function to clear all nodes and connections
   this.clearAll = function(){
     clear();
     defaultNode();
     currentConnection = null;
-    currentNode = null;
+    currenNode = null;
   }
   
-  // Declare the function to add a node object
   this.addNode = function(x, y, w, h, noDelete){
     return new Node(x, y, w, h, noDelete);
   }
@@ -616,7 +567,6 @@ function NodeGraph(){
   var defaultWidth = 180; // originally 100.
   var defaultHeight = 80; // originally 50.
   
-  // Declare function to add a node at the point of a user click
   this.addNodeAtMouse = function(){
     //alert("Zevan");
     var w = currentNode.width() || defaultWidth;
@@ -626,7 +576,6 @@ function NodeGraph(){
     currentConnection = null;
   }
   
-  // Declare function to set the default node
   function defaultNode(){
     
     var temp = new Node(win.width() / 2 - defaultWidth / 2, 
@@ -635,10 +584,8 @@ function NodeGraph(){
     temp.txt[0].focus();
     currentNode = temp;
   }
-  // Invoke function to set the default node
   defaultNode();
 
-  // Declare function to translate node from JSON
   this.fromJSON = function(data){
     clear();
     for (var i in data.nodes){
@@ -665,7 +612,6 @@ function NodeGraph(){
     }
   }
   
-  // Declare function to translate node into JSON
   this.toJSON = function(){
     var json = '{"nodes" : [';
     for (var i in nodes){
@@ -700,7 +646,6 @@ function NodeGraph(){
     return json;
   }
   
-  // Declare function to deal with escape characters
   function addSlashes(str) {
     str = str.replace(/\\/g,'\\\\');
     str = str.replace(/\'/g,'\\\'');
