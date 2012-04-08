@@ -94,16 +94,16 @@ $(function(){
   });
   
   // Add the event handler to retrieve the JSON content from the user's file
-  $(".file").live('click', function() {
+  $(".file").on('click', function() {
     var name = $(this).text();
     $.getJSON("files/" + name + ".json", {n:Math.random()}, function(data){
        graph.fromJSON(data);
        
        filename.val(name);
     });
-  }).live('mouseover', function(){
+  }).on('mouseover', function(){
     $(this).css({"background-color": "#ededed"});
-  }).live("mouseout", function(){
+  }).on("mouseout", function(){
     $(this).css({"background-color": "white"});
   });
   
