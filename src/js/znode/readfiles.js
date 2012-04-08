@@ -1,3 +1,4 @@
+// Declare the function to read a file into a new Node.
 function handleFileSelect(evt) {
   var files = evt.target.files; // FileList object
   // Loop through the FileList and generate the Node objects.
