@@ -2,7 +2,8 @@
 $(function(){
   
   // Start by creating a new NodeGraph object
-  var graph = new NodeGraph();
+  //  var graph = new NodeGraph();
+  graph = new NodeGraph();  // declared in script portion of index.html
   
   // Add the mouseup event handler to the canvas element
   // consider moving to NodeGraph
@@ -111,13 +112,26 @@ $(function(){
   
   // Add the click event handler to the findvar element  
   $("#findvar").click(function(){
-    var tmp = $("#varname").val();
+    //var tmp = $("#varname").val();
     // NEED TO ADD IN AN ALERT IF NO MATCHES!
     // Highlight the parent element if a string match is found
-    var nodesfound = $("pre:contains(" + tmp + ")").parent().show().parent().css('background-color','yellow');
+    //var nodesfound = $("pre:contains(" + tmp + ")").parent().show().parent().css('background-color','yellow');
     parseForVariables();
     parseForFunctions();
   });
+  
+  function highlightVars(whichString) {
+    //var tmp = $("#varname").val();
+    // NEED TO ADD IN AN ALERT IF NO MATCHES!
+    clearHighlights();
+    if (whichString.length > 0) {
+      var nodesfound = $("pre:contains(" + whichString + ")").parent().show().parent().css('background-color','yellow');
+    }
+  }
+  
+  function clearHighlights() {
+    var nodesfound = $(".node").css('background-color','white');    
+  }
 
   // Add the click event handler for the clear button element
   $("#clearvar").click(function(){
@@ -126,6 +140,9 @@ $(function(){
   });
 
   // Add the click event handler to the compviewclose element
+    clearHighlights();
+  });
+
   $("#compviewclose").click(function(){
     // hide the compview element
     $("#compview").hide();
@@ -197,6 +214,5 @@ $(function(){
     }
     //alert(foundVariables + ' ' + foundVars);
   }
-
   
 });
