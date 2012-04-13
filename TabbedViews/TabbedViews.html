@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>CodeViz</title>
+		<!-- <link rel="stylesheet" type="text/css" href="styles/TabbedViews.css" /> -->
+		<link type="text/css" href="styles/custom-theme/jquery-ui-1.8.17.custom.css" rel="Stylesheet" />
+		<script type="text/javascript" src="scripts/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery-ui-1.8.17.custom.min.js"></script>
+	</head>
+	
+	<script>
+		$(function() {
+			$( "#tabs" ).tabs();
+		});
+	</script>
+	
+	<body>
+		<div class="demo">
+			<div id="tabs">
+				<ul>
+					<li><a href="#Resources">Resources View</a></li>
+					<li><a href="#Inheritance">Inheritance View</a></li>
+					<li><a href="#Composition">Composition View</a></li>
+					<li><a href="#Functions">Functions View</a></li>
+					<li><a href="#GlobalVariables">Global Variables</a></li>
+				</ul>
+				<div id="Resources">
+					<h1>Resources View of the project</h1>
+					<p>This page would provide a hierarchical layout of all resources (files) in the project.</p>
+					<iframe src="" width="1280" height="1024"></iframe>
+				</div>
+				<div id="Inheritance">
+					<h1>Inheritance View</h1>
+					<p>This page would provide a layout showing relevant inheritance between classes.</p>
+					<iframe src="" width="1280" height="1024"></iframe>
+				</div>
+				<div id="Composition">
+					<h1>Composition View</h1>
+					<p>This page would provide a layout showing the composition of a selected class.</p>
+					<iframe src="" width="1280" height="1024"></iframe>
+				</div>
+				<div id="Functions">
+					<h1>Functions View</h1>
+					<p>This page would provide a list of all (non-anonymous) functions.</p>
+					<p>When one is selected, any class that references that function will be highlighted.</p>
+					<iframe src="" width="1280" height="1024"></iframe>
+				</div>
+				<div id="GlobalVariables">
+					<h1>Global Variables View</h1>
+					<p>This page would provide a list of global variables.</p>
+					<p>When one is selected, any class that references that variable will be highlighted.</p>
+					<iframe src="" width="1280" height="1024"></iframe>
+				</div>
+			</div>			
+		</div>
+	</body>
+</html>

@@ -1,0 +1,33 @@
+#navbar ul{
+	list-style-type:none; /* gets rid of the bullets in unordered list */ 
+	margin:0;
+	padding:0;
+} 
+
+#navbar li{
+	display: inline; /* used to create a horizontal rather than vertical alignment */
+}
+
+#navbar a:link, #navbar a:visited{
+	font-weight:bold;
+	color: white;
+	background-color: #CCCCCC;
+	padding:4px; 
+	text-decoration:none; 
+}
+
+
+
+#navbar a:hover{
+	background-color: #003366;
+}
+
+
+#main h1{
+	color: #003366;
+}
+
+#main p{
+	color: #003366;
+}
+
