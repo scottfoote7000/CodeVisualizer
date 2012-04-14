@@ -49,8 +49,8 @@ body, html{
 
 #openWin{
   position : absolute;
-  top : 60px;
-  left : 20px;
+  top : 50px;
+  left : 200px;
   width : 250px;
   height : 510px;
   background-color : #dcdcdc;
@@ -116,7 +116,9 @@ textarea{
   outline: 1px solid #cccccc;
 }
 
-
+.txt {
+  background-color : white;
+}
 
 .nodename {
   font-size : 10px;
@@ -124,6 +126,7 @@ textarea{
   padding : none;
   margin : none;
   color : black;
+  background-color : transparent;
 }
 .nodecomp {
   display : none;
@@ -142,6 +145,7 @@ textarea{
 
 #compview {
   display : block;
+  resize : both;
   position : absolute;
   z-index : 100000;
   /*height : 400px;*/

@@ -347,7 +347,7 @@ function NodeGraph(){
     
     
     // this textarea field stores the node's code.
-    n.append("<div class='nodecomp'><pre class='txt' contenteditable='true' spellcheck='false' /></pre></div>");
+    n.append("<div class='nodecomp'><pre class='txt' contenteditable='true' spellcheck='false'></pre></div>");
     var txt = $(".node .txt").last();
     txt.css("position","absolute");
    
