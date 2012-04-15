@@ -1,4 +1,3 @@
-// Declare the function to search for variables
 function parseForVariables() {
   var foundVariables = [];
   var foundVars = 0; // index for foundVariables array.
@@ -6,12 +5,13 @@ function parseForVariables() {
   var j = 0; // variableArray counter.
   var tmp = "var "; // looking for all strings matching 'var ';
   var varlist = $("#availableVars");
-  $("pre:contains(" + tmp + ")").each(function(i) {
+  $(".txt:contains(" + tmp + ")").each(function(i) {
     foundVariables[i] = $(this).text();
   });
   for (var i in foundVariables) {
     var testString = new String;
     testString = foundVariables[i];
+    alert(testString.indexOf("\n"));
     var foundOne = testString.indexOf(tmp); // returns -1 if no 'var ' found in this string.
     while (foundOne != -1) {
       var isForLoop = (testString.charAt(foundOne-1)) == '(' ? 1 : 0; // if there's a '(var' then skip this "for loop" var.
@@ -52,24 +52,20 @@ function parseForVariables() {
   }
 }
 
-// Declare the function to search for functions
 function parseForFunctions() {
   var foundFunctions = [];
   var tmp = "function "; // looking for all strings matching 'function ';
   var functionsArray = new Array();
   var j = 0; // functionsArray counter.
   var varlist = $("#availableVars");  // still need to add this to index.html, etc.
-  $("pre:contains(" + tmp + ")").each(function(i) {
+  $(".txt:contains(" + tmp + ")").each(function(i) {
     foundFunctions[i] = $(this).text();
     //alert($(this).text());
   });
   for (var i in foundFunctions) {
-    // Create a new object to hold the list of functions found
     var testString = new String;
-    // setup an array to hold the list
     testString = foundFunctions[i];
     var foundOne = testString.indexOf(tmp); // returns -1 if no 'function ' found in this string.
-    // Loop through content, putting each new reference to the function into the array
     while (foundOne != -1) {
       var isAnonymousFunction = (testString.charAt(foundOne+10)) == '(' ? 1 : 0; // check if this is an anonymous function.
       testString = testString.substring(foundOne+9); // strip off leading part of string up to first 'function ' occurance.

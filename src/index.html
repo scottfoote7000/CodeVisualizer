@@ -12,6 +12,7 @@
     <script type="text/javascript" src="js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery.color.js"></script>
     <script type="text/javascript" src="js/libs/raphael.js"></script>
+    <script type="text/javascript" src="js/znode/findClassnames.js"></script>
     <script type="text/javascript" src="js/znode/variables.js"></script>
     <script type="text/javascript" src="js/znode/readfiles.js"></script>
     <script type="text/javascript" src="js/znode/nodegraph.js"></script>
@@ -65,30 +66,63 @@
     
     <div id="compview">  <!-- added this div -->
       <div id="compviewbox">
-        <div id="compviewheader">Global Variables/Functions </div>
-        <div id="compviewclose">X</div>
+        <div id="compviewheader">Filter by selection</div>
+        <!--<div id="compviewclose">X</div>-->
       </div>
-      <div id="compviewtxt">
-        <select id="availableVars" onchange="highlightVars(this.options[this.selectedIndex].value)">
+      <div class="compviewtxt">Pick a class...<br>
+        <select id="availableClasses" onchange="inheritanceView(this.options[this.selectedIndex].value)">
+          <option value="">Clear selection...</option>
+        </select>
+      </div>
+      <div class="compviewtxt">Pick any function...<br>
+        <select id="availableFunctions" onchange="highlightVars(this.options[this.selectedIndex].value)">
+          <option value="">Clear selection...</option>
+        </select>
+      </div>
+      <div class="compviewtxt">Pick any variable...<br>
+        <select id="availableVariables" onchange="highlightVars(this.options[this.selectedIndex].value)">
           <option value="">Clear selection...</option>
         </select>
       </div>
     </div>
     
     <script>
-      var graph; // declared here globally.
+      // declare glogally used variables in here.
+      var graph;
+      var classnamesArray = new Array();
+      var functionsArray = new Array();
+      var variablesArray = new Array();
+      
       document.getElementById('readfiles').addEventListener('change', handleFileSelect, false);
+      
       function highlightVars(whichString) {
-        //var tmp = $("#varname").val();
         // NEED TO ADD IN AN ALERT IF NO MATCHES!
         clearHighlights();
         if (whichString.length > 0) {
-          var nodesfound = $("pre:contains(" + whichString + ")").parent().show().parent().css('background-color','yellow');
+          var nodesfound = $("pre:contains(" + whichString + ")").each(function() {
+            var temp = new String;
+            temp = $(this).text();
+            var regex = new RegExp(whichString, "g");
+            temp = temp.replace(regex,"<span style='background-color:yellow'>" + whichString + "</span>");
+            $(this).html(temp);
+            $(this).parent().show();
+            $(this).parent().parent().css('background-color','yellow');
+          });
         }
+        //if (whichString.length > 0) {
+        //  var nodesfound = $("pre:contains(" + whichString + ")").parent().show().parent().css('background-color','yellow');
+        //}
       }
       
       function clearHighlights() {
-        var nodesfound = $(".node").css('background-color','white');    
+        // reset all yellow colored backgrounds to white!!!
+        var nodesfound = $(".node").css('background-color','white');
+        // get rid of ALL the <span> nodes, replacing their contents back inline.
+        var nodesHighlighted = $("span").each(function() {
+          var temp = new String;
+          temp = $(this).text();
+          $(this).replaceWith(temp);
+        });
       }
     </script>
 

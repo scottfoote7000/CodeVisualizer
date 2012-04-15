@@ -2,7 +2,7 @@ body, html{
   margin : 0;
   padding : 0;
   overflow : scroll;
-  background : url("../images/graph_paper_tile.gif");
+  background : url("../images/zebra_stripes.png");
 }
 #canvas{
   overflow : visible;
@@ -49,8 +49,8 @@ body, html{
 
 #openWin{
   position : absolute;
-  top : 60px;
-  left : 20px;
+  top : 50px;
+  left : 200px;
   width : 250px;
   height : 510px;
   background-color : #dcdcdc;
@@ -116,7 +116,9 @@ textarea{
   outline: 1px solid #cccccc;
 }
 
-
+.txt {
+  background-color : white;
+}
 
 .nodename {
   font-size : 10px;
@@ -124,6 +126,7 @@ textarea{
   padding : none;
   margin : none;
   color : black;
+  background-color : transparent;
 }
 .nodecomp {
   display : none;
@@ -142,6 +145,7 @@ textarea{
 
 #compview {
   display : block;
+  resize : both;
   position : absolute;
   z-index : 100000;
   /*height : 400px;*/
@@ -150,24 +154,34 @@ textarea{
   left : 20px;
   border : 1px solid gray;
   color : white;
-  padding : 4px;
+  padding : 0px;
+  margin : 0px;
   background-color : white;
+  box-shadow: 2px 2px 3px rgb(0, 0, 0);
 }
 #compviewbox {
   display : -moz-box;
   display : -o-box;
   display : -webkit-box;
-  display : box;
+  display : block;
+  width : 100%;
+  padding : 0px;
+  margin : 0px;
 }
 #compviewheader {
   position : relative;
   background-color : black;
+  text-align : center;
   top : 2px;
   right : 2px;
   width : 100%;
   color: white;
   cursor : pointer;
   font-size : 12px;
+  font-weight : bold;
+  padding-left : 3px;
+  background-image : -webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue));
+  background-image : -moz-linear-gradient(-45deg, cyan, blue);
 }
 #compviewclose {
   float : right;
@@ -179,8 +193,11 @@ textarea{
   cursor : pointer;
   font-size : 12px;
 }
-#compviewtxt {
+.compviewtxt {
   width : 95%;
   height : 90%;
   margin : 10px;
+  color : black;
+  font-size : 12px;
+  font-weight : bold;
 }

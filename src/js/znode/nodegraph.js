@@ -252,7 +252,7 @@ function NodeGraph(){
       return c;
     }
     
-    canvas.append("<div class='node'/>");
+    canvas.append("<div id='" + this.id + "' class='node'/>");
     var n = $(".node").last();
     n.css({"position" : "absolute",
            "display" : "block",
@@ -347,7 +347,7 @@ function NodeGraph(){
     
     
     // this textarea field stores the node's code.
-    n.append("<div class='nodecomp'><pre class='txt' contenteditable='true' spellcheck='false' /></pre></div>");
+    n.append("<div class='nodecomp'><pre id='codeFor" + this.id + "' class='txt' contenteditable='true' spellcheck='false'></pre></div>");
     var txt = $(".node .txt").last();
     txt.css("position","absolute");
    
@@ -580,7 +580,9 @@ function NodeGraph(){
     
     var temp = new Node(win.width() / 2 - defaultWidth / 2, 
                         win.height() / 2 - defaultHeight / 2,
-                        defaultWidth, defaultHeight, true);
+                        defaultWidth*2, defaultHeight, true);
+    var myinput = $(".nodename").last();
+    myinput.val("Click on the Open button in the menu above to choose a view.");
     temp.txt[0].focus();
     currentNode = temp;
   }
@@ -606,6 +608,7 @@ function NodeGraph(){
       var c = data.connections[i];
       createConnection(nodes[c.nodeA], c.conA, nodes[c.nodeB], c.conB);
     }
+    findClassnames(); // parses ALL code areas, populates 3 global arrays of classes, functions, and variables.
   }
 
   this.toJSON = function(){
