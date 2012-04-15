@@ -53,7 +53,7 @@
           <!--<input type="text" name="varname" id="varname" spellcheck="false"/>-->
         </form>
       </div>
-      <div id="findvar" class="btn">Find</div>
+      <div id="addnode" class="btn">Add Node</div>
       <div id="clearvar" class="btn">Reset</div>
       <div id="help" class="btn">Help</div>
     </div>
@@ -69,17 +69,27 @@
         <div id="compviewheader">Filter by selection</div>
         <!--<div id="compviewclose">X</div>-->
       </div>
-      <div class="compviewtxt">Pick a class...<br>
+      <div class="compviewtxt">View inheritance of a class...<br>
         <select id="availableClasses" onchange="inheritanceView(this.options[this.selectedIndex].value)">
           <option value="">Clear selection...</option>
         </select>
       </div>
-      <div class="compviewtxt">Pick any function...<br>
+      <div class="compviewtxt">&nbsp;&nbsp;View a function's calls...<br>&nbsp;&nbsp;
+        <select id="classFunctions" onchange="highlightVars(this.options[this.selectedIndex].value)">
+          <option value="">Clear selection...</option>
+        </select>
+      </div>
+      <div class="compviewtxt">View composition of a class...<br>
+        <select id="availableClassComps" onchange="compositionView(this.options[this.selectedIndex].value)">
+          <option value="">Clear selection...</option>
+        </select>
+      </div>
+      <div class="compviewtxt">View usage of any function ...<br>
         <select id="availableFunctions" onchange="highlightVars(this.options[this.selectedIndex].value)">
           <option value="">Clear selection...</option>
         </select>
       </div>
-      <div class="compviewtxt">Pick any variable...<br>
+      <div class="compviewtxt">View usage of any variable...<br>
         <select id="availableVariables" onchange="highlightVars(this.options[this.selectedIndex].value)">
           <option value="">Clear selection...</option>
         </select>

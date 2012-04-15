@@ -54,7 +54,7 @@ body, html{
   width : 250px;
   height : 510px;
   background-color : #dcdcdc;
-  z-index : 6000;
+  z-index : 1000000;
   display : none;
 }
 
@@ -147,7 +147,7 @@ textarea{
   display : block;
   resize : both;
   position : absolute;
-  z-index : 100000;
+  z-index : 10000;
   /*height : 400px;*/
   /*width : 400px;*/
   top : 50px;

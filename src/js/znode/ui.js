@@ -4,17 +4,17 @@ $(function(){
   graph = new NodeGraph();  // declared in script portion of index.html
   
   // consider moving to NodeGraph
-  $("#canvas").mouseup(function(e){
-     if (openWin.css("display") == "none"){
-       var children = $(e.target).children();
-       if (children.length > 0){
-         var type = children[0].tagName;
-         if (type == "desc" || type == "SPAN"){
-           graph.addNodeAtMouse();
-         }
-       }
-     }
-  });
+  //$("#canvas").mouseup(function(e){
+  //   if (openWin.css("display") == "none"){
+  //     var children = $(e.target).children();
+  //     if (children.length > 0){
+  //       var type = children[0].tagName;
+  //       if (type == "desc" || type == "SPAN"){
+  //         graph.addNodeAtMouse();
+  //       }
+  //     }
+  //   }
+  //});
   
   // ui code
   var openWin = $("#openWin");
@@ -27,6 +27,11 @@ $(function(){
   });
   $("#clear").click(function(){
     graph.clearAll();
+    document.getElementById('availableClasses').options.length = 1;
+    document.getElementById('classFunctions').options.length = 1;
+    document.getElementById('availableClassComps').options.length = 1;
+    document.getElementById('availableFunctions').options.length = 1;
+    document.getElementById('availableVariables').options.length = 1;
   });
   $("#help").click(function(){
     window.open("http://www.zreference.com/znode", "_blank");
@@ -91,38 +96,22 @@ $(function(){
   
   
   
-  
-  
-  $("#findvar").click(function(){
-    //var tmp = $("#varname").val();
-    // NEED TO ADD IN AN ALERT IF NO MATCHES!
-    //var nodesfound = $("pre:contains(" + tmp + ")").parent().show().parent().css('background-color','yellow');
-//    parseForVariables();
-//    parseForFunctions();
-    findClassnames();
-    $("#compview").show();
+  $("#addnode").click(function(){
+    graph.addNodeAtMouse();
   });
-  
-//  function highlightVars(whichString) {
+
+
+// COMMENTED OUT THE findvar BUTTON AND FUNCTION - NO LONGER NECESSARY.  
+//  $("#findvar").click(function(){
 //    //var tmp = $("#varname").val();
 //    // NEED TO ADD IN AN ALERT IF NO MATCHES!
-//    clearHighlights();
-//    if (whichString.length > 0) {
-////      var nodesfound = $("pre:contains(" + whichString + ")").parent().show().parent().css('background-color','yellow');
-//      var nodesfound = $("pre:contains(" + whichString + ")").each(function(whichString) {
-//        $(this).replace(whichString/g,"<span style='background-color:yellow'>" + whichString + "</span>");
-//        alert($(this));
-//      });
-//    }
-//  }
+//    //var nodesfound = $("pre:contains(" + tmp + ")").parent().show().parent().css('background-color','yellow');
+////    parseForVariables();
+////    parseForFunctions();
+//    findClassnames();
+//    $("#compview").show();
+//  });
   
-//  function clearHighlights() {
-////    var nodesfound = $(".node").css('background-color','white');
-//    var nodesHighlighted = $("span").each(function() {
-//      $(this).replaceWith($(this).text());
-//    });
-//  }
-
   $("#clearvar").click(function(){
     clearHighlights();
   });

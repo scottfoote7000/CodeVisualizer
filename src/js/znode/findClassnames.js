@@ -12,6 +12,7 @@ function findClassnames() {
   var m = 0; // variablesArray counter.
   var tmp = "function "; // looking for all lines beginning with 'function ';
   var classlist = $("#availableClasses");
+  var classcomplist = $("#availableClassComps");
   var functionlist = $("#availableFunctions");
   var varlist = $("#availableVariables");
 //  $("pre:contains(" + tmp + ")").each(function(i) {
@@ -103,77 +104,94 @@ function findClassnames() {
   for (var i in classnamesArray) {
 //    classlist.append("<option value='" + classnamesArray[i][0] + "'>" + classnamesArray[i][2] + " - " + classnamesArray[i][0] + "</option>");
     classlist.append("<option value='" + classnamesArray[i][1] + "'>" + classnamesArray[i][0] + "</option>");
+    classcomplist.append("<option value='" + classnamesArray[i][1] + "'>" + classnamesArray[i][0] + "</option>");
   }
+  // don't put duplicate function names in the SELECT box...
+  var priorFunction = new String;
+  priorFunction = null;
   for (var i in functionsArray) {
 //    functionlist.append("<option value='" + functionsArray[i][0] + "'>" + functionsArray[i][1] + " - " + functionsArray[i][0] + "</option>");
-    functionlist.append("<option value='" + functionsArray[i][0] + "'>" + functionsArray[i][2] + "." + functionsArray[i][0] + "</option>");
+    if (priorFunction != functionsArray[i][0]) {
+      functionlist.append("<option value='" + functionsArray[i][0] + "'>" + functionsArray[i][0] + "</option>");
+      priorFunction = functionsArray[i][0];
+    }
   }
+  // don't put duplicate variable names in the SELECT box...
+  var priorVariable = new String;
+  priorVariable = null;
   for (var i in variablesArray) {
-    varlist.append("<option value='" + variablesArray[i][0] + "'>" + variablesArray[i][0] + "</option>");
+    if (priorVariable != variablesArray[i][0]) {
+      varlist.append("<option value='" + variablesArray[i][0] + "'>" + variablesArray[i][0] + "</option>");
+      priorVariable = variablesArray[i][0];
+    }
   }
 
 }
 
 function inheritanceView(whichNodeID) {
-  clearHighlights();
   // pass in the selected Classname - rather pass in the ID value, to search the global arrays.
+  clearHighlights();
+  // filter/populate the list of Functions for this selected Class...
+  populateClassFunctions(whichNodeID);
   var whichClassName = new String();
   var whichSuperClassName = new String();
   var whichSuperNodeID = null;
   var stringsToBeHighlighted = new Array();
   var stringArrayCounter = 0;
   // show (in a tree style) all its super (only one) and sub-classes.
-  for (var i in classnamesArray) {
-    if (classnamesArray[i][1] == whichNodeID) { // index 1 is where the NodeID is stored.
-      whichClassName = classnamesArray[i][0];
-      whichSuperClassName = classnamesArray[i][2]; // even if it is "".
-      // if there's a super-class for this class, find its name and highlight it.
-      if (whichSuperClassName != "") {
-        for (var i in classnamesArray) {
-          if (classnamesArray[i][0] == whichSuperClassName) {
-            whichSuperClassID = classnamesArray[i][1];
-            document.getElementById(whichSuperClassID).style.backgroundColor = 'yellow';
-          }
-        }
-        // highlight any calls to functions in the superclass, if one exists, within the class's own code area.
-        var lastString = new String();
-        lastString = "";
-        for (var i in functionsArray) {
-          var whichFunction = new String();
-          if (functionsArray[i][1] == whichSuperClassID) { // only check for functions from the superclass...
-            if (lastString != functionsArray[i][0]){ // already highlighted this one?...
-//              highlightString(whichNodeID,"this."+functionsArray[i][0]);
-              stringsToBeHighlighted[stringArrayCounter] = "this." + functionsArray[i][0];
-              stringArrayCounter = stringArrayCounter + 1;
-              lastString = functionsArray[i][0];
+  if (whichNodeID != "") {
+    for (var i in classnamesArray) {
+      if (classnamesArray[i][1] == whichNodeID) { // index 1 is where the NodeID is stored.
+        whichClassName = classnamesArray[i][0];
+        whichSuperClassName = classnamesArray[i][2]; // even if it is "".
+        // if there's a super-class for this class, find its name and highlight it.
+        if (whichSuperClassName != "") {
+          for (var i in classnamesArray) {
+            if (classnamesArray[i][0] == whichSuperClassName) {
+              whichSuperClassID = classnamesArray[i][1];
+              document.getElementById(whichSuperClassID).style.backgroundColor = 'yellow';
             }
           }
-        }
-        // highlight any variables inherited from the superclass, if one exists, within the class's own code area.
-        lastString = "";
-        for (var i in variablesArray) {
-          var whichVariable = new String();
-          if (variablesArray[i][1] == whichSuperClassID) { // only check for variables from the superclass...
-            if (lastString != variablesArray[i][0]){ // already highlighted this one?...
-              //highlightString(whichNodeID,"this."+variablesArray[i][0]);
-              stringsToBeHighlighted[stringArrayCounter] = "this." + variablesArray[i][0];
-              stringArrayCounter = stringArrayCounter + 1;
-              lastString = variablesArray[i][0];
+          // highlight any calls to functions in the superclass, if one exists, within the class's own code area.
+          var lastString = new String();
+          lastString = "";
+          for (var i in functionsArray) {
+            var whichFunction = new String();
+            if (functionsArray[i][1] == whichSuperClassID) { // only check for functions from the superclass...
+              if (lastString != functionsArray[i][0]){ // already highlighted this one?...
+  //              highlightString(whichNodeID,"this."+functionsArray[i][0]);
+                stringsToBeHighlighted[stringArrayCounter] = "this." + functionsArray[i][0];
+                stringArrayCounter = stringArrayCounter + 1;
+                lastString = functionsArray[i][0];
+              }
             }
           }
+          // highlight any variables inherited from the superclass, if one exists, within the class's own code area.
+          lastString = "";
+          for (var i in variablesArray) {
+            var whichVariable = new String();
+            if (variablesArray[i][1] == whichSuperClassID) { // only check for variables from the superclass...
+              if (lastString != variablesArray[i][0]){ // already highlighted this one?...
+                //highlightString(whichNodeID,"this."+variablesArray[i][0]);
+                stringsToBeHighlighted[stringArrayCounter] = "this." + variablesArray[i][0];
+                stringArrayCounter = stringArrayCounter + 1;
+                lastString = variablesArray[i][0];
+              }
+            }
+          }
+          highlightString(whichNodeID,stringsToBeHighlighted);
         }
-        highlightString(whichNodeID,stringsToBeHighlighted);
+        document.getElementById(whichNodeID).style.backgroundColor = 'yellow';
+        // show the class's own source code - open the code area.
+        document.getElementById("codeFor"+whichNodeID).parentNode.style.display = 'auto'; // this ID a sub-DIV in the node DIV.
       }
-      document.getElementById(whichNodeID).style.backgroundColor = 'yellow';
-      // show the class's own source code - open the code area.
-      document.getElementById("codeFor"+whichNodeID).parentNode.style.display = 'auto'; // this ID a sub-DIV in the node DIV.
     }
-  }
-  // if there are sub-classes for this class, find them and highlight them.
-  for (var i in classnamesArray) {
-    if (classnamesArray[i][2] == whichClassName) {
-//      alert(classnamesArray[i][0]);
-      document.getElementById(classnamesArray[i][1]).style.backgroundColor = 'yellow';
+    // if there are sub-classes for this class, find them and highlight them.
+    for (var i in classnamesArray) {
+      if (classnamesArray[i][2] == whichClassName) {
+  //      alert(classnamesArray[i][0]);
+        document.getElementById(classnamesArray[i][1]).style.backgroundColor = 'yellow';
+      }
     }
   }
 }
@@ -181,6 +199,86 @@ function inheritanceView(whichNodeID) {
 function highlightString(thisNodeID, theseStrings) {
   if (theseStrings.length > 0) {
     var thisElement = $("#codeFor" + thisNodeID + "").each(function() {
+      var temp = new String;
+      temp = $(this).text();
+      for (var i in theseStrings) {
+        if (temp.indexOf(theseStrings[i]) > -1) { // string is in here
+          var nextCharacter = new String;
+          nextCharacter = temp.charAt(temp.indexOf(theseStrings[i])+theseStrings[i].length);
+          if (nextCharacter == " " || nextCharacter == "(" || nextCharacter == "," || nextCharacter == ")" || nextCharacter == "=") {
+            var regex = new RegExp(theseStrings[i], "g");
+            temp = temp.replace(regex,"<span style='background-color:yellow'>" + theseStrings[i] + "</span>");
+          }
+        }
+      }
+      $(this).html(temp);
+      $(this).parent().show();
+      $(this).parent().parent().css('background-color','yellow');
+    });
+  }
+}
+
+function populateClassFunctions(whichClassID) {
+  // whichClassID is a NodeID, used as the index in the classnamesArray and functionsArray.
+  var functionlist = $("#classFunctions");
+  // clean out the existing SELECT except for its first OPTION...
+  document.getElementById("classFunctions").options.length = 0; // clears out all the existing options...
+  functionlist.append("<option value=''>Clear selection...</option>");
+  for (var i in functionsArray) {
+    if (functionsArray[i][1] == whichClassID) {
+      functionlist.append("<option value='" + functionsArray[i][0] + "'>" + functionsArray[i][0] + "</option>");
+    }
+  }
+}
+
+function compositionView(whichClassID) {
+  // pass in the selected Classname - rather pass in the ID value, to search the global arrays.
+  clearHighlights();
+  var whichClassName = new String();
+  var stringsToBeHighlighted = new Array();
+  var stringArrayCounter = 0;
+  if (whichClassID != "") {
+    // highlight the selected class's node
+    document.getElementById(whichClassID).style.backgroundColor = 'yellow';
+    // show the class's own source code - open the code area.
+    document.getElementById("codeFor"+whichClassID).parentNode.style.display = 'auto'; // this ID a sub-DIV in the node DIV.
+    // search for all nodes that contain a "new Classname" string.
+    for (var i in classnamesArray) {
+      if (classnamesArray[i][1] == whichClassID) { // index 1 is where the NodeID is stored.
+        whichClassName = classnamesArray[i][0];
+        stringsToBeHighlighted[stringArrayCounter] = whichClassName; // so that it is highlighted too.
+        stringArrayCounter = stringArrayCounter + 1;
+      }
+    }
+    // highlight any calls to functions in this class...
+    for (var i in functionsArray) {
+      var whichFunction = new String();
+      if (functionsArray[i][1] == whichClassID) { // only check for functions from this class...
+        stringsToBeHighlighted[stringArrayCounter] = "this." + functionsArray[i][0];
+        stringArrayCounter = stringArrayCounter + 1;
+      }
+    }
+    // highlight any references to variables from this class...
+    for (var i in variablesArray) {
+      var whichVariable = new String();
+      if (variablesArray[i][1] == whichClassID) { // only check for variables from the superclass...
+        stringsToBeHighlighted[stringArrayCounter] = "this." + variablesArray[i][0];
+        stringArrayCounter = stringArrayCounter + 1;
+      }
+    }
+    highlightComposition(whichClassName,stringsToBeHighlighted);
+  }
+  // if found...
+  //    highlight that node
+  //    highlight the "new" statement
+  //    process the node's code, highlighting all function calls and variables to that "new Classname" object
+  //    just use the arrays to figure out which functions and variables to highlight.
+}
+
+function highlightComposition(thisClassName, theseStrings) {
+  if (theseStrings.length > 0) {
+    var whichString = "new " + thisClassName; // indicated this code "includes this class by composition".
+    var thisElement = $("pre:contains(" + whichString + ")").each(function() {
       var temp = new String;
       temp = $(this).text();
       for (var i in theseStrings) {
