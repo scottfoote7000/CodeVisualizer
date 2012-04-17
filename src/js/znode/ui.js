@@ -3,6 +3,7 @@ $(function(){
 //  var graph = new NodeGraph();
   graph = new NodeGraph();  // declared in script portion of index.html
   
+  // we commented this out - and moved the "add node" up to a menu button.
   // consider moving to NodeGraph
   //$("#canvas").mouseup(function(e){
   //   if (openWin.css("display") == "none"){
@@ -119,5 +120,8 @@ $(function(){
   $("#compviewclose").click(function(){
     $("#compview").hide();
   });
-    
+  
+  $("#compviewheader").click(function(){
+    $("#compviewselections").slideToggle();
+  });
 });

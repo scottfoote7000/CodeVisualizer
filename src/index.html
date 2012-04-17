@@ -66,33 +66,35 @@
     
     <div id="compview">  <!-- added this div -->
       <div id="compviewbox">
-        <div id="compviewheader">Filter by selection</div>
+        <div id="compviewheader">&nbsp;&nbsp;Filter by selection&nbsp;&nbsp;</div>
         <!--<div id="compviewclose">X</div>-->
       </div>
-      <div class="compviewtxt">View inheritance of a class...<br>
-        <select id="availableClasses" onchange="inheritanceView(this.options[this.selectedIndex].value)">
-          <option value="">Clear selection...</option>
-        </select>
-      </div>
-      <div class="compviewtxt">&nbsp;&nbsp;View a function's calls...<br>&nbsp;&nbsp;
-        <select id="classFunctions" onchange="highlightVars(this.options[this.selectedIndex].value)">
-          <option value="">Clear selection...</option>
-        </select>
-      </div>
-      <div class="compviewtxt">View composition of a class...<br>
-        <select id="availableClassComps" onchange="compositionView(this.options[this.selectedIndex].value)">
-          <option value="">Clear selection...</option>
-        </select>
-      </div>
-      <div class="compviewtxt">View usage of any function ...<br>
-        <select id="availableFunctions" onchange="highlightVars(this.options[this.selectedIndex].value)">
-          <option value="">Clear selection...</option>
-        </select>
-      </div>
-      <div class="compviewtxt">View usage of any variable...<br>
-        <select id="availableVariables" onchange="highlightVars(this.options[this.selectedIndex].value)">
-          <option value="">Clear selection...</option>
-        </select>
+      <div id="compviewselections">
+        <div class="compviewtxt">View inheritance of a class...<br>
+          <select id="availableClasses" onchange="inheritanceView(this.options[this.selectedIndex].value)">
+            <option value="">Clear selection...</option>
+          </select>
+        </div>
+        <div class="compviewtxt">&nbsp;&nbsp;View a function's calls...<br>&nbsp;&nbsp;
+          <select id="classFunctions" onchange="highlightVars(this.options[this.selectedIndex].value)">
+            <option value="">Clear selection...</option>
+          </select>
+        </div>
+        <div class="compviewtxt">View composition of a class...<br>
+          <select id="availableClassComps" onchange="compositionView(this.options[this.selectedIndex].value)">
+            <option value="">Clear selection...</option>
+          </select>
+        </div>
+        <div class="compviewtxt">View usage of any function ...<br>
+          <select id="availableFunctions" onchange="highlightVars(this.options[this.selectedIndex].value)">
+            <option value="">Clear selection...</option>
+          </select>
+        </div>
+        <div class="compviewtxt">View usage of any variable...<br>
+          <select id="availableVariables" onchange="highlightVars(this.options[this.selectedIndex].value)">
+            <option value="">Clear selection...</option>
+          </select>
+        </div>
       </div>
     </div>
     
@@ -119,9 +121,6 @@
             $(this).parent().parent().css('background-color','yellow');
           });
         }
-        //if (whichString.length > 0) {
-        //  var nodesfound = $("pre:contains(" + whichString + ")").parent().show().parent().css('background-color','yellow');
-        //}
       }
       
       function clearHighlights() {

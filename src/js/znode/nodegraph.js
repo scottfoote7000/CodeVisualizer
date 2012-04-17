@@ -223,9 +223,9 @@ function NodeGraph(){
       var y = mouseY - startY;
       if (bounds){
         if (x < bounds.left) x = bounds.left;
-        if (x > bounds.right) x = bounds.right;
+//        if (x > bounds.right) x = bounds.right;
         if (y < bounds.top) y = bounds.top;
-        if (y > bounds.bottom) y = bounds.bottom;
+//        if (y > bounds.bottom) y = bounds.bottom;
       }
       element.css("left", x).css("top",y);
       dragCallback();
@@ -652,5 +652,5 @@ function NodeGraph(){
     str = str.replace(/\n/g,'\\\\n');
     return str;
   }
-
+  
 }
