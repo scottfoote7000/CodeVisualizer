@@ -317,16 +317,21 @@ function NodeGraph(){
     
     
     
-    n.append("<div class='details'>?</div>");
+    n.append("<div class='details'>View Code</div>");
     var details = $(".node .details").last();
     details.css({"position":"absolute","padding-right" : 2, "padding-top" : 1, "padding-left" : 2,
             "color" : "white", "font-family" : "sans-serif",
             "top" : 0, "right": 0, "cursor": "pointer",
-            "font-size" : "7px", "background-color" : "gray", "z-index" : 100});
+            "font-size" : "7px", "background-color" : "none", "z-index" : 100});
+    //  details.hover(function(){
+    //  details.css("color","black");
+    //}, function(){
+    //  details.css("color","white");
       details.hover(function(){
-      details.css("color","black");
+      details.css("font-weight","bold");
     }, function(){
-      details.css("color","white");
+      details.css("font-weight","normal");
+
     }).click(function(){
       var temp = $(this).siblings('.nodecomp');
       temp.toggle();
@@ -405,30 +410,30 @@ function NodeGraph(){
     this.bottom = bottom;
     
     function positionLeft(){
-      left.css("top", n.height() / 2 - 5);
+      left.css("top", n.height() / 2 - 6);
     }
     function positionRight(){
-      right.css("left",n.width() + 1).css("top", n.height() / 2 - 5);
+      right.css("left",n.width() + 1).css("top", n.height() / 2 - 6);
     }
     function positionTop(){
-      top.css("left", n.width() / 2 - 5);
+      top.css("left", n.width() / 2 - 6);
     }
     function positionBottom(){
-      bottom.css("top",n.height() + 1).css("left", n.width() / 2 - 5);
+      bottom.css("top",n.height() + 1).css("left", n.width() / 2 - 6);
     }
     
     function setupConnection(div){
       div.css({"position" : "absolute", "width" : "10px", "padding":0,
                "height" : "10px", "background-color" : "#aaaaaa",
-               "font-size" : "1px", "cursor" : "pointer"});
+               border : "1px solid black", "font-size" : "1px", "cursor" : "pointer"});
     }
     
     this.connectionPos = function(conn){
       var loc = conn.position();
       var nLoc = n.position();
       var point = {};
-      point.x = nLoc.left + loc.left + 5;
-      point.y = nLoc.top - topHeight + loc.top + 5;
+      point.x = nLoc.left + loc.left + 4;
+      point.y = nLoc.top - topHeight + loc.top + 4;
       return point;
     }
     
@@ -458,8 +463,8 @@ function NodeGraph(){
       curr.addConnection(link);
       var loc = $(this).position();
       var nLoc = n.position();
-      var x = loc.left + nLoc.left + 5;
-      var y = loc.top + nLoc.top - topHeight + 5;
+      var x = loc.left + nLoc.left + 4;
+      var y = loc.top + nLoc.top - topHeight + 4;
       newNode = true;
       
       var id = setInterval(function(){
@@ -555,9 +560,18 @@ function NodeGraph(){
   
   this.clearAll = function(){
     clear();
+    this.clearselects();
     defaultNode();
     currentConnection = null;
     currenNode = null;
+  }
+  
+  this.clearselects = function() {
+    document.getElementById('availableClasses').options.length = 1;
+    document.getElementById('classFunctions').options.length = 1;
+    document.getElementById('availableClassComps').options.length = 1;
+    document.getElementById('availableFunctions').options.length = 1;
+    document.getElementById('availableVariables').options.length = 1;
   }
   
   this.addNode = function(x, y, w, h, noDelete){

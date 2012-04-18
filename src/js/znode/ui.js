@@ -28,11 +28,6 @@ $(function(){
   });
   $("#clear").click(function(){
     graph.clearAll();
-    document.getElementById('availableClasses').options.length = 1;
-    document.getElementById('classFunctions').options.length = 1;
-    document.getElementById('availableClassComps').options.length = 1;
-    document.getElementById('availableFunctions').options.length = 1;
-    document.getElementById('availableVariables').options.length = 1;
   });
   $("#help").click(function(){
     window.open("http://www.zreference.com/znode", "_blank");
@@ -59,6 +54,7 @@ $(function(){
   $("#open").click(function(){
     var fileList =  $("#files");
     fileList.html("<div>loading...<\/div>");
+    graph.clearselects();
     openWin.fadeIn();
     fileList.load("json/files.php?"+Math.random()*1000000);
   });
@@ -94,24 +90,10 @@ $(function(){
   }).live("mouseout", function(){
     $(this).css({"background-color": "white"});
   });
-  
-  
-  
+   
   $("#addnode").click(function(){
     graph.addNodeAtMouse();
   });
-
-
-// COMMENTED OUT THE findvar BUTTON AND FUNCTION - NO LONGER NECESSARY.  
-//  $("#findvar").click(function(){
-//    //var tmp = $("#varname").val();
-//    // NEED TO ADD IN AN ALERT IF NO MATCHES!
-//    //var nodesfound = $("pre:contains(" + tmp + ")").parent().show().parent().css('background-color','yellow');
-////    parseForVariables();
-////    parseForFunctions();
-//    findClassnames();
-//    $("#compview").show();
-//  });
   
   $("#clearvar").click(function(){
     clearHighlights();
