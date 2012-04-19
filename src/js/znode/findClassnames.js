@@ -203,12 +203,12 @@ function highlightString(thisNodeID, theseStrings) {
       temp = $(this).text();
       for (var i in theseStrings) {
         if (temp.indexOf(theseStrings[i]) > -1) { // string is in here
-          var nextCharacter = new String;
-          nextCharacter = temp.charAt(temp.indexOf(theseStrings[i])+theseStrings[i].length);
-          if (nextCharacter == " " || nextCharacter == "(" || nextCharacter == "," || nextCharacter == ")" || nextCharacter == "=") {
-            var regex = new RegExp(theseStrings[i], "g");
+          //var nextCharacter = new String;
+          //nextCharacter = temp.charAt(temp.indexOf(theseStrings[i])+theseStrings[i].length);
+          //if (nextCharacter == " " || nextCharacter == "(" || nextCharacter == "," || nextCharacter == ")" || nextCharacter == "=") {
+            var regex = new RegExp('\\b' + theseStrings[i] + '\\b', "g");
             temp = temp.replace(regex,"<span style='background-color:yellow'>" + theseStrings[i] + "</span>");
-          }
+          //}
         }
       }
       $(this).html(temp);
@@ -243,6 +243,7 @@ function compositionView(whichClassID) {
     // show the class's own source code - open the code area.
     document.getElementById("codeFor"+whichClassID).parentNode.style.display = 'auto'; // this ID a sub-DIV in the node DIV.
     // search for all nodes that contain a "new Classname" string.
+    // first go get the Classname...
     for (var i in classnamesArray) {
       if (classnamesArray[i][1] == whichClassID) { // index 1 is where the NodeID is stored.
         whichClassName = classnamesArray[i][0];
@@ -254,7 +255,7 @@ function compositionView(whichClassID) {
     for (var i in functionsArray) {
       var whichFunction = new String();
       if (functionsArray[i][1] == whichClassID) { // only check for functions from this class...
-        stringsToBeHighlighted[stringArrayCounter] = "this." + functionsArray[i][0];
+        stringsToBeHighlighted[stringArrayCounter] = functionsArray[i][0];
         stringArrayCounter = stringArrayCounter + 1;
       }
     }
@@ -262,11 +263,11 @@ function compositionView(whichClassID) {
     for (var i in variablesArray) {
       var whichVariable = new String();
       if (variablesArray[i][1] == whichClassID) { // only check for variables from the superclass...
-        stringsToBeHighlighted[stringArrayCounter] = "this." + variablesArray[i][0];
+        stringsToBeHighlighted[stringArrayCounter] = variablesArray[i][0];
         stringArrayCounter = stringArrayCounter + 1;
       }
     }
-    highlightComposition(whichClassName,stringsToBeHighlighted);
+    highlightComposition(whichClassName, whichClassID, stringsToBeHighlighted);
   }
   // if found...
   //    highlight that node
@@ -275,22 +276,20 @@ function compositionView(whichClassID) {
   //    just use the arrays to figure out which functions and variables to highlight.
 }
 
-function highlightComposition(thisClassName, theseStrings) {
+function highlightComposition(thisClassName, thisClassID, theseStrings) {
   if (theseStrings.length > 0) {
     var whichString = "new " + thisClassName; // indicated this code "includes this class by composition".
     var thisElement = $("pre:contains(" + whichString + ")").each(function() {
       var temp = new String;
       temp = $(this).text();
-      for (var i in theseStrings) {
-        if (temp.indexOf(theseStrings[i]) > -1) { // string is in here
-          var nextCharacter = new String;
-          nextCharacter = temp.charAt(temp.indexOf(theseStrings[i])+theseStrings[i].length);
-          if (nextCharacter == " " || nextCharacter == "(" || nextCharacter == "," || nextCharacter == ")" || nextCharacter == "=") {
-            var regex = new RegExp(theseStrings[i], "g");
+//      if ($(this).attr(id) != "codeFor" + thisClassID) { // skip highlighting in the selected class's own code.
+        for (var i in theseStrings) {
+//          if (temp.indexOf(theseStrings[i]) > -1) { // string is in here
+            var regex = new RegExp('\\b' + theseStrings[i] + '\\b', "g");
             temp = temp.replace(regex,"<span style='background-color:yellow'>" + theseStrings[i] + "</span>");
-          }
+//          }
         }
-      }
+//      }
       $(this).html(temp);
       $(this).parent().show();
       $(this).parent().parent().css('background-color','yellow');
