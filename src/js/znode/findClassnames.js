@@ -282,14 +282,15 @@ function highlightComposition(thisClassName, thisClassID, theseStrings) {
     var thisElement = $("pre:contains(" + whichString + ")").each(function() {
       var temp = new String;
       temp = $(this).text();
-//      if ($(this).attr(id) != "codeFor" + thisClassID) { // skip highlighting in the selected class's own code.
+      thisCodeNode = "codeFor" + thisClassID;
+      if (this.getAttribute("id") != thisCodeNode) { // skip highlighting in the selected class's own code.
         for (var i in theseStrings) {
 //          if (temp.indexOf(theseStrings[i]) > -1) { // string is in here
             var regex = new RegExp('\\b' + theseStrings[i] + '\\b', "g");
             temp = temp.replace(regex,"<span style='background-color:yellow'>" + theseStrings[i] + "</span>");
 //          }
         }
-//      }
+      }
       $(this).html(temp);
       $(this).parent().show();
       $(this).parent().parent().css('background-color','yellow');
