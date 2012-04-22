@@ -285,12 +285,12 @@ function NodeGraph(){
            
     n.append("<div class='bar'/>");
     var bar = $(".node .bar").last();
-    bar.css({"height" : "10px", 
-             "background-color" : "gray",
-             "background-image" : "-webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue))",
-             "background-image" : "-moz-linear-gradient(-45deg, cyan, blue)",
-             "padding" : "0", "margin": "0",
-             "font-size" : "9px", "cursor" : "pointer"});
+    //bar.css({"height" : "10px", 
+    //         "background-color" : "gray",
+    //         "background-image" : "-webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue))",
+    //         "background-image" : "-moz-linear-gradient(-45deg, cyan, blue)",
+    //         "padding" : "0", "margin": "0",
+    //         "font-size" : "9px", "cursor" : "pointer"});
              
              
     if (!noDelete){

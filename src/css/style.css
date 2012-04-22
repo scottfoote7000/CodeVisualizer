@@ -201,3 +201,12 @@ textarea{
   font-size : 12px;
   font-weight : bold;
 }
+.bar {
+  height : 10px;
+  background-image : -webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue));
+  background-image : -moz-linear-gradient(-45deg, cyan, blue);
+  padding : 0;
+  margin: 0;
+  font-size : 9px;
+  cursor : pointer;
+}
