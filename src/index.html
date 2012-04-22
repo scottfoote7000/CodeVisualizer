@@ -109,7 +109,7 @@
           var nodesfound = $("pre:contains(" + whichString + ")").each(function() {
             var temp = new String;
             temp = $(this).text();
-            var regex = new RegExp(whichString, "g");
+            var regex = new RegExp('\\b' + whichString + '\\b', "g");
             temp = temp.replace(regex,"<span style='background-color:yellow'>" + whichString + "</span>");
             $(this).html(temp);
             $(this).parent().show();
