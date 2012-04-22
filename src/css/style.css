@@ -180,7 +180,7 @@ textarea{
   font-size : 12px;
   font-weight : bold;
   padding-left : 3px;
-  background-image : -webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue));
+  background-image : -webkit-gradient(linear, 100% 0%, 0% 100%, from(blue), to(cyan));
   background-image : -moz-linear-gradient(-45deg, cyan, blue);
 }
 #compviewclose {
@@ -203,7 +203,7 @@ textarea{
 }
 .bar {
   height : 10px;
-  background-image : -webkit-gradient(linear, 100% 0%, 0% 100%, from(cyan), to(blue));
+  background-image : -webkit-gradient(linear, 100% 0%, 0% 100%, from(blue), to(cyan));
   background-image : -moz-linear-gradient(-45deg, cyan, blue);
   padding : 0;
   margin: 0;
